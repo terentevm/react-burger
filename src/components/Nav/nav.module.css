@@ -1,0 +1,23 @@
+.nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.item {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+
+.text {
+    color: var(--color-secondary);
+}
+
+.text_active {
+    color: var(--color-primary);
+}
