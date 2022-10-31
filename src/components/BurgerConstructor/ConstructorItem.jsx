@@ -1,5 +1,5 @@
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ConstructorItemType } from '../utils/types';
+import { ConstructorItemType } from '../../utils/types';
 import styles from './constructor.module.css';
 
 const getItemText = (item) => {
@@ -18,7 +18,7 @@ const ConstructorItem = ({ item }) => {
   return (
     <li className={`${styles.constructor__item} ${extraClass}`}>
       <div className={styles.constructor__icon}>
-        <DragIcon />
+        { !item.isLocked && <DragIcon /> }
       </div>
 
       <ConstructorElement

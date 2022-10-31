@@ -50,15 +50,18 @@
 .constructor__item_top {
     position: sticky;
     top: 0;
+    background: var(--app-background);
 }
 
 .constructor__item_bottom {
     position: sticky;
     bottom: 0;
+    background: var(--app-background);
 }
 
 .constructor__icon {
     display: inline-block;
+    min-width: 24px;
 }
 
 .constructor__bottom {
@@ -83,3 +86,7 @@
     height: 33px;
 }
 
+.constructor__icon_medium {
+    width: 33px;
+    height: 33px;
+}

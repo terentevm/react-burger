@@ -1,6 +1,6 @@
 import { ConstructorItem } from './ConstructorItem';
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { BurgerConstructorType } from '../utils/types';
+import { BurgerConstructorType } from '../../utils/types';
 import styles from './constructor.module.css';
 
 const calculateTotalPrice = (burgerComposition) => {
@@ -19,12 +19,12 @@ const BurgerConstructor = ({ burgerComposition }) => {
       <div className={styles.constructor__bottom}>
         <span className={styles.constructor__price}>
           <span className="text text_type_digits-medium">{ calculateTotalPrice(burgerComposition) }</span>
-          <div style={{width: "33px", height: "33px"}}>
+          <div className={styles.constructor__icon_medium}>
             <CurrencyIcon />
           </div>
 
         </span>
-        <Button type="primary" size="large">
+        <Button htmlType="button" type="primary" size="large">
           Оформить заказ
         </Button>
       </div>

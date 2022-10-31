@@ -3,9 +3,9 @@ import React, {useState} from 'react';
 import AppHeader from '../AppHeader';
 import { BurgerIngredients } from '../BurgerIngredients';
 import { BurgerConstructor } from '../BurgerConstructor';
-import data from "../utils/data";
-import burgerCompositionData from "../utils/burgerComposition";
-import { transformArrayToTree } from "../utils/transformData";
+import data from "../../utils/data";
+import burgerCompositionData from "../../utils/burgerComposition";
+import { transformArrayToTree } from "../../utils/transformData";
 
 import style from './app.module.css';
 const App = () => {

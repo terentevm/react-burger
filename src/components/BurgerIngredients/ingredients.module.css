@@ -16,7 +16,9 @@
     text-decoration: none;
 }
 
-
+.ingredients__tabs {
+    display: flex;
+}
 .anchor {
    overflow-anchor: auto;
     height: 1px;

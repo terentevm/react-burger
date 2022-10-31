@@ -1,4 +1,4 @@
-import { IngredientCardType } from "../utils/types";
+import { IngredientCardType } from "../../utils/types";
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './ingredients.module.css';
 const IngredientCard = ({ data, usageCount }) => {

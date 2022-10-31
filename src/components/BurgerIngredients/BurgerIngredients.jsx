@@ -1,7 +1,7 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState } from "react";
 import { IngredientCard } from "./IngredientCard";
-import { IngredientListType, BurgerIngredientsType } from '../utils/types';
+import { IngredientListType, BurgerIngredientsType } from '../../utils/types';
 import styles from './ingredients.module.css';
 
 const TypeItem = ({ data, burgerComposition }) => {
@@ -19,9 +19,9 @@ const TypeItem = ({ data, burgerComposition }) => {
     <li className={`${styles["type-item"]} mt-10`} id={data.type}>
       <h3 className="text text_type_main-medium">{ data.title }</h3>
       <ul className={styles["ingredients-list"]}>
-        { data.list.map((item, ind) =>
+        { data.list.map((item) =>
           <IngredientCard
-            key = {`${item._id}_${ind}`}
+            key = {item._id}
             data ={ item }
             usageCount={getUsageCount(item)}
           />)
@@ -51,10 +51,10 @@ const BurgerIngredients = ({ dataTree, burgerComposition }) => {
   return (
     <section className={`${styles.section} pt-10`}>
       <h2 className="text text_type_main-large">Соберите бургер</h2>
-      <div className={`mt-5`} style={{ display: 'flex' }}>
+      <div className={`${styles.ingredients__tabs} mt-5`} >
         {
           dataTree.map(treeItem => (
-            <a href={`#${treeItem.type}`} className={styles['tab-link']}>
+            <a key={treeItem.type} href={`#${treeItem.type}`} className={styles['tab-link']}>
               <Tab
                 value={treeItem.type}
                 active={currentTab === `${treeItem.type}`}
