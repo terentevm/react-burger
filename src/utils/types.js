@@ -35,8 +35,9 @@ const BurgerIngredientsType = {
 }
 
 const IngredientCardType = {
- data: PropTypes.shape(IngredientType).isRequired,
- usageCount: PropTypes.number.isRequired
+  data: PropTypes.shape(IngredientType).isRequired,
+  usageCount: PropTypes.number.isRequired,
+  onClick: PropTypes.func
 }
 
 const IngredientListType = {

@@ -1,7 +1,9 @@
 import { ConstructorItem } from './ConstructorItem';
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { BurgerConstructorType } from '../../utils/types';
+import { OrderDetails } from "../Popups/OrderDetails";
 import styles from './constructor.module.css';
+import {useState} from "react";
 
 const calculateTotalPrice = (burgerComposition) => {
   return burgerComposition.reduce((total, item) =>{
@@ -10,6 +12,7 @@ const calculateTotalPrice = (burgerComposition) => {
 }
 
 const BurgerConstructor = ({ burgerComposition }) => {
+  const [showPopup, setShowPopup] = useState(false);
   return (
     <section className={styles.constructor}>
       <ul className={styles.constructor__list}>
@@ -24,10 +27,19 @@ const BurgerConstructor = ({ burgerComposition }) => {
           </div>
 
         </span>
-        <Button htmlType="button" type="primary" size="large">
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={()=>setShowPopup(true)}
+        >
           Оформить заказ
         </Button>
       </div>
+      <OrderDetails
+        visible={ showPopup }
+        onClose={()=>setShowPopup(false)}
+      />
     </section>
   );
 }

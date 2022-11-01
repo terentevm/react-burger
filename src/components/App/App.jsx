@@ -1,17 +1,24 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import AppHeader from '../AppHeader';
 import { BurgerIngredients } from '../BurgerIngredients';
 import { BurgerConstructor } from '../BurgerConstructor';
-import data from "../../utils/data";
 import burgerCompositionData from "../../utils/burgerComposition";
 import { transformArrayToTree } from "../../utils/transformData";
+import { getIngredients } from "../../api";
 
 import style from './app.module.css';
-const App = () => {
+const App = React.memo(() => {
 
-  const [dataTree] =  useState(transformArrayToTree(data));
+  const [dataTree, setDataTree] =  useState([]);
   const [burgerComposition] = useState(burgerCompositionData);
+
+  useEffect(()=>{
+    getIngredients()
+      .then(data=>setDataTree(transformArrayToTree(data)))
+      .catch(e=>setDataTree([]));
+  }, []);
+
   return (
     <>
       <AppHeader />
@@ -21,6 +28,6 @@ const App = () => {
       </main>
     </>
   );
-}
+});
 
 export { App };

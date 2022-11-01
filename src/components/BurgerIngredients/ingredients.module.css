@@ -40,6 +40,7 @@
     position: relative;
     list-style: none;
     width: calc((100% - 16px - 24px) / 2);
+    cursor: pointer;
 }
 
 .ingredient__content {

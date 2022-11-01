@@ -4,7 +4,8 @@
   --color-secondary: #8585AD;
 
   --header-height: 88px;
-
+  --overlay-color: #000000;
+  --overlay-opacity: .6;
 }
 html {
   height: 100%;

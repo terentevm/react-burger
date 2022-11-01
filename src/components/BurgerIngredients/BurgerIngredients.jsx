@@ -3,8 +3,13 @@ import { useState } from "react";
 import { IngredientCard } from "./IngredientCard";
 import { IngredientListType, BurgerIngredientsType } from '../../utils/types';
 import styles from './ingredients.module.css';
+import { IngredientDetails } from '../Popups/IngredientDetails';
 
 const TypeItem = ({ data, burgerComposition }) => {
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupItem, setPopupItem] = useState(null);
+
   const getUsageCount = (ingredient) => {
     let count = burgerComposition.filter(item => item._id === ingredient._id).length;
 
@@ -15,19 +20,39 @@ const TypeItem = ({ data, burgerComposition }) => {
     return count;
   }
 
+  const ingredientOnClick = (item) => {
+    setPopupItem(item);
+    setShowPopup(true);
+  }
+
+  const destroyPopup = () => {
+    setShowPopup(false);
+    setPopupItem(null);
+  }
+
   return (
-    <li className={`${styles["type-item"]} mt-10`} id={data.type}>
-      <h3 className="text text_type_main-medium">{ data.title }</h3>
-      <ul className={styles["ingredients-list"]}>
-        { data.list.map((item) =>
-          <IngredientCard
-            key = {item._id}
-            data ={ item }
-            usageCount={getUsageCount(item)}
-          />)
-        }
-      </ul>
-    </li>
+    <>
+      <li className={`${styles["type-item"]} mt-10`} id={data.type}>
+        <h3 className="text text_type_main-medium">{ data.title }</h3>
+        <ul className={styles["ingredients-list"]}>
+          { data.list.map((item) =>
+            <IngredientCard
+              key = {item._id}
+              data ={ item }
+              usageCount={getUsageCount(item)}
+              onClick={()=>ingredientOnClick(item)}
+            />
+          )}
+        </ul>
+      </li>
+      { showPopup &&
+        <IngredientDetails
+          visible={showPopup}
+          onClose={destroyPopup}
+          ingredient={popupItem}
+        />
+      }
+    </>
   );
 };
 

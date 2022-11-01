@@ -1,9 +1,9 @@
 import { IngredientCardType } from "../../utils/types";
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './ingredients.module.css';
-const IngredientCard = ({ data, usageCount }) => {
+const IngredientCard = ({ data, usageCount, onClick }) => {
   return (
-    <li className={styles.ingredient}>
+    <li className={styles.ingredient} onClick={onClick}>
       <Counter count={usageCount} size="default" />
       <div className={styles["ingredient__content"]}>
         <img src={data.image} alt="Картинка ингредиента"/>

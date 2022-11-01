@@ -1,0 +1,12 @@
+.popup {
+    width: 720px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 120px 100px;
+}
+
+.popup__image {
+    margin-top: 60px;
+    padding: 10px 6px 8px 7px;
+}
