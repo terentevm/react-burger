@@ -7,14 +7,14 @@ const headers = {
 
 const getIngredients = async () => {
   let data = [];
-  try {
-    const res = await fetch(`${API_ROOT}/ingredients`, {headers: headers});
 
-    if (res.ok) {
-      data =( await res.json()).data;
-    }
-  } catch (e) {
-    console.error(e);
+  const res = await fetch(`${API_ROOT}/ingredients`, {headers: headers});
+
+  if (res.ok) {
+    data =( await res.json()).data;
+  }
+  else {
+    throw new Error('Произошла ошибка');
   }
 
   return data;

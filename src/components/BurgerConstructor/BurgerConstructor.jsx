@@ -1,6 +1,7 @@
 import { ConstructorItem } from './ConstructorItem';
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { BurgerConstructorType } from '../../utils/types';
+import { Modal } from "../Modal";
 import { OrderDetails } from "../Popups/OrderDetails";
 import styles from './constructor.module.css';
 import {useState} from "react";
@@ -16,7 +17,7 @@ const BurgerConstructor = ({ burgerComposition }) => {
   return (
     <section className={styles.constructor}>
       <ul className={styles.constructor__list}>
-        { burgerComposition.map((item, ind) => <ConstructorItem key={`${item._id}_${ind}`} item={item}/>)}
+        { burgerComposition.map((item, ind) => (<ConstructorItem key={`${item._id}_${ind}`} item={item}/>))}
       </ul>
 
       <div className={styles.constructor__bottom}>
@@ -36,10 +37,9 @@ const BurgerConstructor = ({ burgerComposition }) => {
           Оформить заказ
         </Button>
       </div>
-      <OrderDetails
-        visible={ showPopup }
-        onClose={()=>setShowPopup(false)}
-      />
+      <Modal onClose={()=>setShowPopup(false)} visible={showPopup}>
+        <OrderDetails />
+      </Modal>
     </section>
   );
 }

@@ -16,7 +16,10 @@ const App = React.memo(() => {
   useEffect(()=>{
     getIngredients()
       .then(data=>setDataTree(transformArrayToTree(data)))
-      .catch(e=>setDataTree([]));
+      .catch(e=>{
+        setDataTree([]);
+        console.error(e);
+      });
   }, []);
 
   return (

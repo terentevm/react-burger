@@ -16,6 +16,9 @@
     margin-top: 16px;
 }
 
+.popup__image {
+    min-height: 240px;
+}
 .popup__nutrition_facts {
     margin-top: 32px;
     display: flex;

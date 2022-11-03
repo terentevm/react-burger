@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IngredientCard } from "./IngredientCard";
 import { IngredientListType, BurgerIngredientsType } from '../../utils/types';
 import styles from './ingredients.module.css';
+import { Modal } from "../Modal";
 import { IngredientDetails } from '../Popups/IngredientDetails';
 
 const TypeItem = ({ data, burgerComposition }) => {
@@ -35,22 +36,20 @@ const TypeItem = ({ data, burgerComposition }) => {
       <li className={`${styles["type-item"]} mt-10`} id={data.type}>
         <h3 className="text text_type_main-medium">{ data.title }</h3>
         <ul className={styles["ingredients-list"]}>
-          { data.list.map((item) =>
+          { data.list.map((item) =>(
             <IngredientCard
               key = {item._id}
               data ={ item }
               usageCount={getUsageCount(item)}
               onClick={()=>ingredientOnClick(item)}
             />
-          )}
+          ))}
         </ul>
       </li>
       { showPopup &&
-        <IngredientDetails
-          visible={showPopup}
-          onClose={destroyPopup}
-          ingredient={popupItem}
-        />
+        <Modal onClose={destroyPopup} visible={showPopup} >
+          <IngredientDetails ingredient={popupItem} />
+        </Modal>
       }
     </>
   );
@@ -60,9 +59,9 @@ const TypeItem = ({ data, burgerComposition }) => {
 const List = ({ dataTree, burgerComposition}) => {
   return (
     <ul className={styles.list}>
-      { dataTree.map((data, ind) =>
+      { dataTree.map((data, ind) =>(
         <TypeItem key={`${data.type}_${ind}`} data={data} burgerComposition={burgerComposition}/>
-      )}
+      ))}
       <div className={styles.anchor}></div>
     </ul>
 

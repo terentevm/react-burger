@@ -2,16 +2,12 @@ import React, {useEffect} from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from "prop-types";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Overlay } from "./Overlay";
 import styles from './modal.module.css';
 
 const modalRoot = document.getElementById( 'modal' );
 
 const Modal = ({ visible, onClose, children}) => {
-  const onKeyDownHandler = (e) => {
-    if (e.key === 'Escape') {
-      onClose();
-    }
-  }
 
   const btnCloseOnClickHandler = (e) => {
     e.stopPropagation();
@@ -26,6 +22,11 @@ const Modal = ({ visible, onClose, children}) => {
 
 
   useEffect(()=>{
+    const onKeyDownHandler = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    }
     document.addEventListener('keydown', onKeyDownHandler);
     return function () {
       document.removeEventListener('keydown', onKeyDownHandler);
@@ -36,9 +37,8 @@ const Modal = ({ visible, onClose, children}) => {
     <>
       {
         visible &&
-        <div
-          className={styles.modal__overlay}
-          onClickCapture={overlayOnClickHandler}
+        <Overlay
+          onClick={overlayOnClickHandler}
         >
           <div className={`${styles.modal__card}`}>
             <div
@@ -49,7 +49,7 @@ const Modal = ({ visible, onClose, children}) => {
             </div>
             { children }
           </div>
-        </div>
+        </Overlay>
       }
     </>,modalRoot)
 }
