@@ -1,0 +1,10 @@
+.content {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  max-width: 1240px;
+  max-height: calc(100% - 89px);
+  height: calc(100% - 89px);
+  overflow-y: hidden;
+  margin: 0 auto;
+}

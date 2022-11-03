@@ -1,0 +1,35 @@
+.popup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 40px 60px;
+    width: 720px;
+}
+
+.popup__header {
+    width: 100%;
+    padding: 14px 0;
+}
+
+.popup__title {
+    margin-top: 16px;
+}
+
+.popup__image {
+    min-height: 240px;
+}
+.popup__nutrition_facts {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.popup__nutrition_fact {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px
+}

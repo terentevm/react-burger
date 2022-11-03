@@ -1,0 +1,28 @@
+.modal__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.6);
+    overflow: hidden;
+}
+
+.modal__card {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 40px;
+
+    min-height: 200px;
+    background: #1C1C21!important;
+
+}
+
+.modal__close_btn {
+    position: absolute;
+    top:60px;
+    right: 40px;
+    cursor: pointer;
+}
