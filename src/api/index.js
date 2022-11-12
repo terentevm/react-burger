@@ -20,4 +20,19 @@ const getIngredients = async () => {
   return data;
 }
 
-export { getIngredients };
+const createOrder = async (ingredientIds) => {
+  const res = await fetch(`${API_ROOT}/orders`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({ingredients: ingredientIds})
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    return data;
+  }
+
+  throw new Error('Произошла ошибка');
+}
+
+export { getIngredients, createOrder };

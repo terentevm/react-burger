@@ -1,49 +1,58 @@
 import { ConstructorItem } from './ConstructorItem';
+import { IngredientsList } from './IngredientsList';
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { BurgerConstructorType } from '../../utils/types';
 import { Modal } from "../Modal";
 import { OrderDetails } from "../Popups/OrderDetails";
 import styles from './constructor.module.css';
-import {useState} from "react";
+import {useState, useContext} from "react";
+import { ConstructorContext, OrderDetailsContext } from '../../context';
+import { createOrder } from '../../api';
 
-const calculateTotalPrice = (burgerComposition) => {
-  return burgerComposition.reduce((total, item) =>{
-    return total +  (item.isLocked ? item.price / 2 : item.price);
-  }, 0);
-}
+const BurgerConstructor = () => {
 
-const BurgerConstructor = ({ burgerComposition }) => {
+  const { price, ingredients } = useContext(ConstructorContext);
+
+  const { orderNumber, setOrderData } = useContext(OrderDetailsContext);
+
   const [showPopup, setShowPopup] = useState(false);
+
+  const sendOrder = () => {
+     const requestData = ingredients.map(item =>item._id);
+     createOrder(requestData).then(res => {
+       setOrderData({
+         name: res.name,
+         orderNumber: res.order.number
+       });
+       setShowPopup(true);
+     }).catch(err => {
+       console.error(err);
+     })
+  }
+
   return (
     <section className={styles.constructor}>
-      <ul className={styles.constructor__list}>
-        { burgerComposition.map((item, ind) => (<ConstructorItem key={`${item._id}_${ind}`} item={item}/>))}
-      </ul>
-
+      <IngredientsList />
       <div className={styles.constructor__bottom}>
         <span className={styles.constructor__price}>
-          <span className="text text_type_digits-medium">{ calculateTotalPrice(burgerComposition) }</span>
+          <span className="text text_type_digits-medium">{ price }</span>
           <div className={styles.constructor__icon_medium}>
             <CurrencyIcon />
           </div>
-
         </span>
         <Button
           htmlType="button"
           type="primary"
           size="large"
-          onClick={()=>setShowPopup(true)}
+          onClick={sendOrder}
         >
           Оформить заказ
         </Button>
       </div>
       <Modal onClose={()=>setShowPopup(false)} visible={showPopup}>
-        <OrderDetails />
+        <OrderDetails orderNumber={orderNumber} />
       </Modal>
     </section>
   );
 }
-
-BurgerConstructor.propTypes = BurgerConstructorType;
 
 export { BurgerConstructor };

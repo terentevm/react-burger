@@ -2,31 +2,32 @@ import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burg
 import { ConstructorItemType } from '../../utils/types';
 import styles from './constructor.module.css';
 
-const getItemText = (item) => {
+const getItemText = (item, isLocked, position) => {
   let text = item.name;
 
-  if (item.isLocked === true) {
-    text = item.position === 'top'
+  if (isLocked === true) {
+    text = position === 'top'
       ? `${text} (верх)`
       : `${text} (низ)`;
   }
 
   return text;
 }
-const ConstructorItem = ({ item }) => {
-  const extraClass = item.isLocked ? styles[`constructor__item_${item.position}`] : '';
+const ConstructorItem = ({ item, isLocked, position, removeAction }) => {
+
   return (
-    <li className={`${styles.constructor__item} ${extraClass}`}>
+    <li className={`${styles.constructor__item}`}>
       <div className={styles.constructor__icon}>
-        { !item.isLocked && <DragIcon /> }
+        { !isLocked && <DragIcon /> }
       </div>
 
       <ConstructorElement
-        text={getItemText(item)}
+        text={getItemText(item, isLocked, position)}
         thumbnail={item.image_mobile}
         price={item.price}
-        type={item.position}
-        isLocked ={item.isLocked}
+        type={position}
+        isLocked ={isLocked}
+        handleClose={() =>removeAction(item)}
       />
 
     </li>

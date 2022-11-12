@@ -16,9 +16,7 @@ const IngredientType = {
 };
 
 const IngredientCompositionType = {
-  ...IngredientType,
-  isLocked: PropTypes.bool.isRequired,
-  position: PropTypes.oneOf(['top', 'bottom', '']).isRequired,
+  ...IngredientType
 };
 
 const CompositionListType =  PropTypes.arrayOf(PropTypes.shape(IngredientCompositionType));
@@ -27,11 +25,6 @@ const DataTreeType = {
   type: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   list: PropTypes.arrayOf(PropTypes.shape(IngredientType)).isRequired
-}
-
-const BurgerIngredientsType = {
-  dataTree: PropTypes.arrayOf(PropTypes.shape(DataTreeType)).isRequired,
-  burgerComposition: CompositionListType.isRequired
 }
 
 const IngredientCardType = {
@@ -45,21 +38,27 @@ const IngredientListType = {
   burgerComposition: CompositionListType.isRequired
 };
 
+const IngredientsTypeList = {
+  dataTree: PropTypes.arrayOf(PropTypes.shape(DataTreeType)).isRequired,
+  burgerComposition: CompositionListType.isRequired,
+  addBun: PropTypes.func.isRequired,
+  addIngredient: PropTypes.func.isRequired
+}
+
 const ConstructorItemType = {
-  item: PropTypes.shape(IngredientCompositionType).isRequired
+  item: PropTypes.shape(IngredientCompositionType).isRequired,
+  isLocked: PropTypes.bool.isRequired,
+  position: PropTypes.oneOf(['top', 'bottom', undefined])
 };
 
-const BurgerConstructorType = {
-  burgerComposition: CompositionListType.isRequired
-}
+
 export {
   DataTreeType,
   IngredientType,
+  IngredientsTypeList,
   IngredientListType,
   CompositionListType,
   IngredientCompositionType,
-  BurgerIngredientsType,
   IngredientCardType,
   ConstructorItemType,
-  BurgerConstructorType
 }

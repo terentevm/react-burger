@@ -11,7 +11,7 @@ const IngredientDetailsType = {
 };
 
 const OrderDetailsType = {
-  ...PopupType
+  orderNumber: PropTypes.string.isRequired
 };
 
 export { IngredientDetailsType, OrderDetailsType };

@@ -2,11 +2,11 @@ import styles from './popup.module.css';
 import DoneSVG from '../../../images/done.svg';
 import { OrderDetailsType } from "../types";
 
-const OrderDetails = () => {
+const OrderDetails = ({ orderNumber }) => {
   return (
     <div className={styles.popup}>
       <h2 className={`text text_type_digits-large`}>
-        034536
+        { orderNumber }
       </h2>
       <p className={`text text_type_main-medium mt-8`}>
         ИДЕНТИФИКАТОР ЗАКАЗА
