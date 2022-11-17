@@ -43,15 +43,28 @@
 
 .constructor__placeholder {
     display: flex;
-    justify-content: center;
+    justify-content: stretch;
     align-items: center;
+    align-self: center;
     flex-grow: 1;
     background: #1C1C21;
     margin: 0 0;
     padding: 0 0;
     border-radius: 40px;
+    width: 100%;
+    height: 100%;
 }
 
+.constructor__drop {
+
+    flex-grow: 1;
+
+}
+
+.constructor__placeholder > p {
+    width: 100%;
+    text-align: center;
+}
 .constructor__bun_top {
 
     border-radius: 88px 88px 40px 40px;
@@ -83,6 +96,7 @@ border-radius: 40px 40px 88px 88px;
     align-items: center;
     gap: 8px;
     width: 100%;
+    cursor: move;
 }
 
 .constructor__item_top {

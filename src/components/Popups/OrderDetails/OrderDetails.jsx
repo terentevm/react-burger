@@ -1,8 +1,11 @@
 import styles from './popup.module.css';
 import DoneSVG from '../../../images/done.svg';
-import { OrderDetailsType } from "../types";
+import { useSelector } from 'react-redux';
 
-const OrderDetails = ({ orderNumber }) => {
+const OrderDetails = () => {
+
+  const orderNumber = useSelector(state=>state.orderDetails.orderNumber);
+
   return (
     <div className={styles.popup}>
       <h2 className={`text text_type_digits-large`}>
@@ -23,7 +26,5 @@ const OrderDetails = ({ orderNumber }) => {
     </div>
   )
 }
-
-OrderDetails.propType = OrderDetailsType;
 
 export { OrderDetails };

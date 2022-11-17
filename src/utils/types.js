@@ -19,7 +19,12 @@ const IngredientCompositionType = {
   ...IngredientType
 };
 
-const CompositionListType =  PropTypes.arrayOf(PropTypes.shape(IngredientCompositionType));
+const DraggableItem = {
+  id: PropTypes.string.isRequired,
+  ingredient: PropTypes.shape(IngredientCompositionType).isRequired
+}
+
+const CompositionListType =  PropTypes.arrayOf(PropTypes.shape(DraggableItem));
 
 const DataTreeType = {
   type: PropTypes.string.isRequired,
@@ -30,7 +35,7 @@ const DataTreeType = {
 const IngredientCardType = {
   data: PropTypes.shape(IngredientType).isRequired,
   usageCount: PropTypes.number.isRequired,
-  onClick: PropTypes.func
+  onClick: PropTypes.func.isRequired
 }
 
 const IngredientListType = {
@@ -41,14 +46,21 @@ const IngredientListType = {
 const IngredientsTypeList = {
   dataTree: PropTypes.arrayOf(PropTypes.shape(DataTreeType)).isRequired,
   burgerComposition: CompositionListType.isRequired,
-  addBun: PropTypes.func.isRequired,
-  addIngredient: PropTypes.func.isRequired
+  firstTab: PropTypes.string.isRequired,
+  changeTab: PropTypes.func.isRequired
 }
 
-const ConstructorItemType = {
-  item: PropTypes.shape(IngredientCompositionType).isRequired,
-  isLocked: PropTypes.bool.isRequired,
+const BunType = {
+  bunItem:  PropTypes.shape(IngredientCompositionType).isRequired,
   position: PropTypes.oneOf(['top', 'bottom', undefined])
+}
+
+
+
+const ConstructorItemType = {
+  item: PropTypes.shape(DraggableItem).isRequired,
+  removeAction: PropTypes.func.isRequired,
+
 };
 
 
@@ -61,4 +73,5 @@ export {
   IngredientCompositionType,
   IngredientCardType,
   ConstructorItemType,
+  BunType,
 }

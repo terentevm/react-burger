@@ -1,32 +1,35 @@
+import {useState, useEffect, useMemo} from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { ConstructorItem } from './ConstructorItem';
 import { IngredientsList } from './IngredientsList';
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Modal } from "../Modal";
 import { OrderDetails } from "../Popups/OrderDetails";
+import { sendOrder, resetOrderDetails } from '../../services/actions/orderDetails';
 import styles from './constructor.module.css';
-import {useState, useContext} from "react";
-import { ConstructorContext, OrderDetailsContext } from '../../context';
-import { createOrder } from '../../api';
 
 const BurgerConstructor = () => {
 
-  const { price, ingredients } = useContext(ConstructorContext);
+  const dispatch = useDispatch();
+  const { bun, ingredients, showPopup } = useSelector(state=>({
+    bun: state.burgerConstructor.bun,
+    ingredients: state.burgerConstructor.ingredients,
+    showPopup: state.orderDetails.showPopup
+  }));
 
-  const { orderNumber, setOrderData } = useContext(OrderDetailsContext);
+  const price = useMemo(()=>{
+    const bunTotal = bun ? bun.price * 2 : 0;
+    return bunTotal + ingredients.reduce((total, item) =>{
+      return total + item.ingredient.price;
+    }, 0);
+  }, [bun, ingredients])
 
-  const [showPopup, setShowPopup] = useState(false);
-
-  const sendOrder = () => {
-     const requestData = ingredients.map(item =>item._id);
-     createOrder(requestData).then(res => {
-       setOrderData({
-         name: res.name,
-         orderNumber: res.order.number
-       });
-       setShowPopup(true);
-     }).catch(err => {
-       console.error(err);
-     })
+  const sendOrderToApi = () => {
+     const requestData = ingredients.map(item =>item.ingredient._id);
+     if (bun) {
+       requestData.push(bun._id);
+     }
+     dispatch(sendOrder(requestData));
   }
 
   return (
@@ -43,13 +46,16 @@ const BurgerConstructor = () => {
           htmlType="button"
           type="primary"
           size="large"
-          onClick={sendOrder}
+          onClick={sendOrderToApi}
         >
           Оформить заказ
         </Button>
       </div>
-      <Modal onClose={()=>setShowPopup(false)} visible={showPopup}>
-        <OrderDetails orderNumber={orderNumber} />
+      <Modal
+        onClose={()=>dispatch(resetOrderDetails())}
+        visible={showPopup}
+      >
+        <OrderDetails />
       </Modal>
     </section>
   );

@@ -1,24 +1,30 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { IngredientCard } from "./IngredientCard";
 import { IngredientListType, IngredientsTypeList } from '../../utils/types';
 import styles from './ingredients.module.css';
 import { Modal } from "../Modal";
 import { IngredientDetails } from '../Popups/IngredientDetails';
-import { IngredientsContext, ConstructorContext } from '../../context';
-import { getIngredients } from "../../api";
+import { getIngredientsFromApi } from "../../services/actions/ingredients";
 import { transformArrayToTree } from "../../utils/transformData";
+import { setPopupData, resetPopupData } from '../../services/actions/ingredientPupup';
 
-const TypeItem = ({ data, burgerComposition, addBun, addIngredient }) => {
+const TypeItem = ({ data, burgerComposition }) => {
 
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupItem, setPopupItem] = useState(null);
+  const dispatch = useDispatch();
+
+  const showPopup = useSelector(state => state.ingredientPopup.showPopup);
+  const currentBun = useSelector(state=>state.burgerConstructor.bun);
 
   const getUsageCount = (ingredient) => {
-    let count = burgerComposition.filter(item => item._id === ingredient._id).length;
+
+    let count = 0;
 
     if (ingredient.type === 'bun') {
-      count = count / 2;
+      count = currentBun && currentBun._id === ingredient._id ? 2 : 0;
+    } else {
+      count = burgerComposition.filter(item => item.ingredient._id === ingredient._id).length;
     }
 
     return count;
@@ -26,19 +32,12 @@ const TypeItem = ({ data, burgerComposition, addBun, addIngredient }) => {
 
   const ingredientOnClick = (item) => {
 
-    if (item.type === 'bun') {
-      addBun(item);
-    } else {
-      addIngredient(item);
-    }
+    dispatch(setPopupData(item));
 
-    setPopupItem(item);
-    setShowPopup(true);
   }
 
   const destroyPopup = () => {
-    setShowPopup(false);
-    setPopupItem(null);
+    dispatch(resetPopupData());
   }
 
   return (
@@ -46,19 +45,20 @@ const TypeItem = ({ data, burgerComposition, addBun, addIngredient }) => {
       <li className={`${styles["type-item"]} mt-10`} id={data.type}>
         <h3 className="text text_type_main-medium">{ data.title }</h3>
         <ul className={styles["ingredients-list"]}>
-          { data.list.map((item) =>(
+          { data.list.map((item) => (
             <IngredientCard
               key = {item._id}
               data ={ item }
               usageCount={getUsageCount(item)}
               onClick={()=>ingredientOnClick(item)}
             />
+
           ))}
         </ul>
       </li>
       { showPopup &&
         <Modal onClose={destroyPopup} visible={showPopup} >
-          <IngredientDetails ingredient={popupItem} />
+          <IngredientDetails />
         </Modal>
       }
     </>
@@ -66,16 +66,69 @@ const TypeItem = ({ data, burgerComposition, addBun, addIngredient }) => {
 };
 
 
-const List = ({ dataTree, burgerComposition, addBun, addIngredient }) => {
+const List = ({ dataTree, burgerComposition, firstTab, changeTab }) => {
+
+  const [currentTab, setCurrentTab] = useState('bun');
+  const [parentY, setParentY] = useState(0);
+  const ulRef = useRef();
+
+  useEffect(()=>{
+
+    const calculateNewTabName = ()=>{
+      const childern = ulRef.current.childNodes;
+
+      let newCurrentTab = childern[0].id;
+
+      let prevDiff = undefined;
+      for (const li of childern) {
+
+        if (li.tagName !== 'LI') {
+          continue;
+        }
+        const { y } = li.getBoundingClientRect();
+        let diff = Math.abs(y - parentY) ;
+        if (!prevDiff) {
+          prevDiff = diff;
+          continue;
+        }
+
+        if (diff < prevDiff ) {
+
+          prevDiff =  diff;
+          newCurrentTab = li.id;
+
+        }
+      }
+
+      setCurrentTab(newCurrentTab);
+    }
+
+    const scrollHandler = () => setTimeout(calculateNewTabName, 60);
+
+    ulRef.current?.addEventListener('scroll', scrollHandler);
+
+    return ()=>{
+      ulRef.current?.removeEventListener('scroll', scrollHandler);
+    }
+  },[parentY])
+
+  useEffect(()=>{
+    const { y } = ulRef.current.getBoundingClientRect();
+    setParentY(y);
+  },[useRef.current])
+
+  useEffect(()=>{
+    changeTab(currentTab);
+  },[currentTab])
+
+
   return (
-    <ul className={styles.list}>
+    <ul className={styles.list} ref={ulRef}>
       { dataTree.map((data, ind) =>(
         <TypeItem
           key={`${data.type}_${ind}`}
           data={data}
           burgerComposition={burgerComposition}
-          addBun={addBun}
-          addIngredient={addIngredient}
         />
       ))}
       <div className={styles.anchor}></div>
@@ -86,17 +139,16 @@ const List = ({ dataTree, burgerComposition, addBun, addIngredient }) => {
 
 const BurgerIngredients = () => {
 
+  const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("bun");
-  const { dataTree, setDataTree } = useContext(IngredientsContext);
-  const { ingredients, addBun, addIngredient } = useContext(ConstructorContext);
+
+  const { dataTree, burgerComposition } = useSelector(state=>({
+    dataTree: transformArrayToTree(state.ingredients.ingredients),
+    burgerComposition: state.burgerConstructor.ingredients
+  }));
 
   useEffect(()=>{
-    getIngredients()
-      .then(data=>setDataTree(transformArrayToTree(data)))
-      .catch(e=>{
-        setDataTree([]);
-        console.error(e);
-      });
+    dispatch(getIngredientsFromApi());
   }, []);
 
   return (
@@ -119,9 +171,9 @@ const BurgerIngredients = () => {
     </div>
     <List
       dataTree={dataTree}
-      burgerComposition={ingredients}
-      addBun={addBun}
-      addIngredient={addIngredient}
+      burgerComposition={burgerComposition}
+      firstTab={currentTab}
+      changeTab={setCurrentTab}
     />
     </section>
   );
