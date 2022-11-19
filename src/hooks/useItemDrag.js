@@ -1,6 +1,6 @@
 import { useDrag } from 'react-dnd';
 import { useSelector, useDispatch } from 'react-redux';
-import { setDraggedItem } from '../../../services/actions/dragAndDrop';
+import { setDraggedItem } from '../services/actions/dragAndDrop';
 
 const useItemDrag = (item, type) => {
   const dispatch = useDispatch();

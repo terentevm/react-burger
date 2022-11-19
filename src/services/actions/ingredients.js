@@ -7,10 +7,10 @@ export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
 export const getIngredientsFromApi = () => {
   return (dispatch) => {
     dispatch({ type: GET_INGREDIENTS_REQUEST });
-    getIngredients().then(items => {
+    getIngredients().then(res => {
       dispatch({
         type: GET_INGREDIENTS_SUCCESS,
-        payload: items
+        payload: res.data
       });
     }).catch((err) => {
       console.error(err);

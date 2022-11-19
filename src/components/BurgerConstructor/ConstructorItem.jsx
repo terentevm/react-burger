@@ -3,7 +3,7 @@ import { ConstructorItemType } from '../../utils/types';
 import { useRef } from 'react';
 import { useDrop } from "react-dnd";
 import { useSelector, useDispatch } from 'react-redux';
-import { useItemDrag } from '../DragAndDrop/hooks/useItemDrag';
+import { useItemDrag } from '../../hooks/useItemDrag';
 import { moveIngredient } from '../../services/actions/constructor';
 import { isHidden } from '../../utils/isHidden';
 

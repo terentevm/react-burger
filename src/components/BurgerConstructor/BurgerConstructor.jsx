@@ -46,6 +46,7 @@ const BurgerConstructor = () => {
           htmlType="button"
           type="primary"
           size="large"
+          disabled={ !bun || ingredients.length === 0 }
           onClick={sendOrderToApi}
         >
           Оформить заказ

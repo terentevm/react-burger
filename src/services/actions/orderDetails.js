@@ -1,4 +1,5 @@
 import { createOrder } from '../../api';
+import { resetConstructor } from '../actions/constructor';
 
 export const SET_ORDER_DATA = 'SET_ORDER_DATA';
 export const RESET_ORDER_DATA = 'RESET_ORDER_DATA';
@@ -13,7 +14,10 @@ export const sendOrder = (requestData) => {
           orderNumber: res.order.number,
           showPopup: true
         }
-      })
+      });
+
+      dispatch(resetConstructor());
+
     }).catch(err => {
        console.error(err);
      })

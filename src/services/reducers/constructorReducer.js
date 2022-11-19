@@ -2,7 +2,8 @@ import {
   ADD_BUN,
   ADD_INGREDIENT,
   MOVE_INGREDIENT,
-  REMOVE_INGREDIENT
+  REMOVE_INGREDIENT,
+  RESET_CONSTRUCTOR,
 } from '../actions/constructor';
 
 import {
@@ -44,6 +45,11 @@ const constructorReducer = (state = initialState, action) => {
         ingredients: moveItem(state.ingredients, dragIndex, targetIndex)
       };
       break;
+    case RESET_CONSTRUCTOR:
+      return {
+        bun: null,
+        ingredients: []
+      }
     default:
       return state;
 
