@@ -1,3 +1,5 @@
+import { checkResponse } from '../utils/checkResponse';
+
 const API_ROOT = 'https://norma.nomoreparties.space/api';
 
 const headers = {
@@ -5,19 +7,21 @@ const headers = {
   'Accept': 'application/json',
 }
 
-const getIngredients = async () => {
-  let data = [];
-
-  const res = await fetch(`${API_ROOT}/ingredients`, {headers: headers});
-
-  if (res.ok) {
-    data =( await res.json()).data;
-  }
-  else {
-    throw new Error('Произошла ошибка');
-  }
-
-  return data;
+const request = (url, options) => {
+  return fetch(url, options).then(checkResponse);
 }
 
-export { getIngredients };
+const getIngredients = () => {
+  return request(`${API_ROOT}/ingredients`, {headers: headers});
+
+}
+
+const createOrder = (ingredientIds) => {
+  return request(`${API_ROOT}/orders`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({ingredients: ingredientIds})
+  });
+}
+
+export { getIngredients, createOrder };

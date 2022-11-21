@@ -1,12 +1,15 @@
 import styles from './popup.module.css';
 import DoneSVG from '../../../images/done.svg';
-import { OrderDetailsType } from "../types";
+import { useSelector } from 'react-redux';
 
 const OrderDetails = () => {
+
+  const orderNumber = useSelector(state=>state.orderDetails.orderNumber);
+
   return (
     <div className={styles.popup}>
       <h2 className={`text text_type_digits-large`}>
-        034536
+        { orderNumber }
       </h2>
       <p className={`text text_type_main-medium mt-8`}>
         ИДЕНТИФИКАТОР ЗАКАЗА
@@ -23,7 +26,5 @@ const OrderDetails = () => {
     </div>
   )
 }
-
-OrderDetails.propType = OrderDetailsType;
 
 export { OrderDetails };

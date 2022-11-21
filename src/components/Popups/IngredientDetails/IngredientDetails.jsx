@@ -1,7 +1,7 @@
-import { IngredientDetailsType } from '../types';
+import { useSelector } from 'react-redux';
 import styles from './ingredient-popup.module.css';
 
-const IngredientDetails = ({ ingredient }) => {
+const IngredientDetails = () => {
 
   const {
     name,
@@ -10,7 +10,8 @@ const IngredientDetails = ({ ingredient }) => {
     carbohydrates,
     calories,
     image_large
-  } = ingredient;
+  } = useSelector(state => state.ingredientPopup.ingredient);
+
   return (
     <div className={styles.popup}>
       <header className={`${styles.popup__header} text text_type_main-large`}>Детали ингредиента</header>
@@ -41,7 +42,5 @@ const IngredientDetails = ({ ingredient }) => {
     </div>
   );
 }
-
-IngredientDetails.propType = IngredientDetailsType;
 
 export { IngredientDetails };

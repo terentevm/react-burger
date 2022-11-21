@@ -1,33 +1,23 @@
 import React, {useEffect, useState} from 'react';
-
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import AppHeader from '../AppHeader';
 import { BurgerIngredients } from '../BurgerIngredients';
 import { BurgerConstructor } from '../BurgerConstructor';
-import burgerCompositionData from "../../utils/burgerComposition";
 import { transformArrayToTree } from "../../utils/transformData";
 import { getIngredients } from "../../api";
 
 import style from './app.module.css';
 const App = React.memo(() => {
 
-  const [dataTree, setDataTree] =  useState([]);
-  const [burgerComposition] = useState(burgerCompositionData);
-
-  useEffect(()=>{
-    getIngredients()
-      .then(data=>setDataTree(transformArrayToTree(data)))
-      .catch(e=>{
-        setDataTree([]);
-        console.error(e);
-      });
-  }, []);
-
   return (
     <>
       <AppHeader />
       <main className={style.content}>
-        <BurgerIngredients dataTree={ dataTree } burgerComposition={burgerComposition}/>
-        <BurgerConstructor burgerComposition={burgerComposition}/>
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </DndProvider>
       </main>
     </>
   );

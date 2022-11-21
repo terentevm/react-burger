@@ -16,12 +16,15 @@ const IngredientType = {
 };
 
 const IngredientCompositionType = {
-  ...IngredientType,
-  isLocked: PropTypes.bool.isRequired,
-  position: PropTypes.oneOf(['top', 'bottom', '']).isRequired,
+  ...IngredientType
 };
 
-const CompositionListType =  PropTypes.arrayOf(PropTypes.shape(IngredientCompositionType));
+const DraggableItem = {
+  id: PropTypes.string.isRequired,
+  ingredient: PropTypes.shape(IngredientCompositionType).isRequired
+}
+
+const CompositionListType =  PropTypes.arrayOf(PropTypes.shape(DraggableItem));
 
 const DataTreeType = {
   type: PropTypes.string.isRequired,
@@ -29,15 +32,10 @@ const DataTreeType = {
   list: PropTypes.arrayOf(PropTypes.shape(IngredientType)).isRequired
 }
 
-const BurgerIngredientsType = {
-  dataTree: PropTypes.arrayOf(PropTypes.shape(DataTreeType)).isRequired,
-  burgerComposition: CompositionListType.isRequired
-}
-
 const IngredientCardType = {
   data: PropTypes.shape(IngredientType).isRequired,
   usageCount: PropTypes.number.isRequired,
-  onClick: PropTypes.func
+  onClick: PropTypes.func.isRequired
 }
 
 const IngredientListType = {
@@ -45,21 +43,35 @@ const IngredientListType = {
   burgerComposition: CompositionListType.isRequired
 };
 
+const IngredientsTypeList = {
+  dataTree: PropTypes.arrayOf(PropTypes.shape(DataTreeType)).isRequired,
+  burgerComposition: CompositionListType.isRequired,
+  firstTab: PropTypes.string.isRequired,
+  changeTab: PropTypes.func.isRequired
+}
+
+const BunType = {
+  bunItem:  PropTypes.shape(IngredientCompositionType).isRequired,
+  position: PropTypes.oneOf(['top', 'bottom', undefined])
+}
+
+
+
 const ConstructorItemType = {
-  item: PropTypes.shape(IngredientCompositionType).isRequired
+  item: PropTypes.shape(DraggableItem).isRequired,
+  removeAction: PropTypes.func.isRequired,
+
 };
 
-const BurgerConstructorType = {
-  burgerComposition: CompositionListType.isRequired
-}
+
 export {
   DataTreeType,
   IngredientType,
+  IngredientsTypeList,
   IngredientListType,
   CompositionListType,
   IngredientCompositionType,
-  BurgerIngredientsType,
   IngredientCardType,
   ConstructorItemType,
-  BurgerConstructorType
+  BunType,
 }

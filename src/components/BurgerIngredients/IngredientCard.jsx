@@ -1,9 +1,22 @@
 import { IngredientCardType } from "../../utils/types";
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useDrag } from 'react-dnd';
 import styles from './ingredients.module.css';
+
 const IngredientCard = ({ data, usageCount, onClick }) => {
+    const [{ opacity }, ref] = useDrag({
+    type: data.type === 'bun' ? 'bun' : 'ingredient',
+    item: data,
+    collect: monitor => ({
+      opacity: monitor.isDragging() ? 0.5 : 1
+    })
+  });
   return (
-    <li className={styles.ingredient} onClick={onClick}>
+    <li
+      ref={ref}
+      className={styles.ingredient}
+      onClick={() =>onClick(data)}
+    >
       <Counter count={usageCount} size="default" />
       <div className={styles["ingredient__content"]}>
         <img src={data.image} alt="Картинка ингредиента"/>
@@ -18,7 +31,7 @@ const IngredientCard = ({ data, usageCount, onClick }) => {
     </li>
   );
 
-}
+};
 
 IngredientCard.propTypes = IngredientCardType;
 
