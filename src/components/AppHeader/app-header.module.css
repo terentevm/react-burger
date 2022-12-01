@@ -2,6 +2,10 @@
 .header {
     position: relative;
 }
+
+.header__link {
+    text-decoration: none;
+}
 .menu {
     display: flex;
     flex-direction: row;

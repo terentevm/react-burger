@@ -50,17 +50,12 @@ const TypeItem = ({ data, burgerComposition }) => {
               key = {item._id}
               data ={ item }
               usageCount={getUsageCount(item)}
-              onClick={()=>ingredientOnClick(item)}
+              //onClick={()=>ingredientOnClick(item)}
             />
 
           ))}
         </ul>
       </li>
-      { showPopup &&
-        <Modal onClose={destroyPopup} visible={showPopup} >
-          <IngredientDetails />
-        </Modal>
-      }
     </>
   );
 };

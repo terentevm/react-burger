@@ -36,6 +36,11 @@
     padding-top: 24px;
 }
 
+.ingredient__link {
+    text-decoration: none;
+    color: #F2F2F3;
+}
+
 .ingredient {
     position: relative;
     list-style: none;

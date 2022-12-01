@@ -6,6 +6,7 @@
   --header-height: 88px;
   --overlay-color: #000000;
   --overlay-opacity: .6;
+  --content-width: 1240px;
 }
 html {
   height: 100%;

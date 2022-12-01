@@ -1,0 +1,27 @@
+.forgot {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 80px
+}
+
+.forgot__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.forgot__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.forgot__footer_item {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
