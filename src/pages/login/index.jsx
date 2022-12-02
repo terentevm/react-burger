@@ -1,39 +1,29 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { loginRequest } from '../../api';
-import { setIsUserRequest, setUserData } from '../../services/actions/auth';
-
+import { login } from '../../services/actions/auth';
+import { useForm } from "../../hooks/useForm";
 import styles from './login.module.css';
 const LoginPage = () => {
   const dispatch = useDispatch();
-  const { isAuth, userRequest } = useSelector(state=>({
-    isAuth: state.auth.isAuth,
+  const { userRequest } = useSelector(state=>({
     userRequest: state.auth.userRequest
   }));
 
   const location = useLocation();
-  const history = useHistory();
 
+  const { values, handleChange } = useForm({email: "", password: ""});
 
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { email, password } = values;
 
   const onSubmitHandler = useCallback((event)=>{
     event.preventDefault();
-    dispatch(setIsUserRequest(true));
-    loginRequest({
+
+    dispatch(login({
       email: email,
       password: password
-    }).then(res => {
-      dispatch(setUserData(res))
-    }).catch(err=>{
-      alert(err?.message || "Ошибка входа. Проверьте введенные данные")
-    }).finally(()=>{
-      dispatch(setIsUserRequest(false));
-    })
+    }));
   }, [email, password]);
 
   return (
@@ -44,7 +34,7 @@ const LoginPage = () => {
           name="email"
           placeholder="E-mail"
           value={email}
-          onChange={e=>setEmail(e.target.value)}
+          onChange={handleChange}
           disabled={userRequest}
         />
         <PasswordInput
@@ -52,7 +42,7 @@ const LoginPage = () => {
           extraClass="mb-2"
           value={password}
           disabled={userRequest}
-          onChange={e=>setPassword(e.target.value)}
+          onChange={handleChange}
         />
         <Button
           htmlType="submit"

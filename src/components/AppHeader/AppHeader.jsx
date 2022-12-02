@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { NavLink, useRouteMatch } from 'react-router-dom';
+import {Link, NavLink, useRouteMatch} from 'react-router-dom';
 import Container from "../Container";
 import { Nav, NavItem } from "../Nav";
 import { BurgerIcon, ListIcon, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -55,7 +55,9 @@ const AppHeader = () => {
             }
           </menu>
           <div className={styles.logo}>
-            <Logo />
+            <Link to="/">
+              <Logo />
+            </Link>
           </div>
           <NavLink
             to="/profile"

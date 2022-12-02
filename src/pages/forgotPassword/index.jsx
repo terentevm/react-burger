@@ -1,34 +1,28 @@
-import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation, useHistory } from 'react-router-dom';
-import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { setIsUserRequest } from '../../services/actions/auth';
-import { forgotPasswordRequest } from '../../api';
-
+import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { forgotPassword } from '../../services/actions/auth';
+import { useForm } from "../../hooks/useForm";
 import styles from './forgot.module.css';
 
 const ForgotPassword = () => {
   const location = useLocation();
   const history = useHistory();
 
-  const [email, setEmail] = useState("");
+  const { values, handleChange } = useForm({email: ""});
+  const { email } = values;
 
   const dispatch = useDispatch();
-  const { isAuth, userRequest } = useSelector(state=>({
-    isAuth: state.auth.isAuth,
+
+  const { userRequest } = useSelector(state=>({
     userRequest: state.auth.userRequest
   }));
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    dispatch(setIsUserRequest(true));
-    forgotPasswordRequest(email).then(res=>{
-      history.push('/reset-password', {from:location})
-    }).catch(err=>{
-      prompt("Произошла ошибка. Попробуйте еще раз!")
-    }).finally(()=>{
-      dispatch(setIsUserRequest(false));
-    })
+    dispatch(forgotPassword({email: email}, ()=>{
+      history.push('/reset-password',{from:location});
+    }))
   }
 
   return (
@@ -39,7 +33,7 @@ const ForgotPassword = () => {
           name="email"
           placeholder="E-mail"
           value={email}
-          onChange={e=>setEmail(e.target.value)}
+          onChange={handleChange}
           disabled={userRequest}
         />
         <Button htmlType="submit" type="primary" size="medium" disabled={userRequest || !email}>

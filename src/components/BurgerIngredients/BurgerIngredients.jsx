@@ -1,20 +1,15 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { IngredientCard } from "./IngredientCard";
 import { IngredientListType, IngredientsTypeList } from '../../utils/types';
-import styles from './ingredients.module.css';
-import { Modal } from "../Modal";
-import { IngredientDetails } from '../Popups/IngredientDetails';
-import { getIngredientsFromApi } from "../../services/actions/ingredients";
+
 import { transformArrayToTree } from "../../utils/transformData";
-import { setPopupData, resetPopupData } from '../../services/actions/ingredientPupup';
+
+import styles from './ingredients.module.css';
 
 const TypeItem = ({ data, burgerComposition }) => {
 
-  const dispatch = useDispatch();
-
-  const showPopup = useSelector(state => state.ingredientPopup.showPopup);
   const currentBun = useSelector(state=>state.burgerConstructor.bun);
 
   const getUsageCount = (ingredient) => {
@@ -30,16 +25,6 @@ const TypeItem = ({ data, burgerComposition }) => {
     return count;
   }
 
-  const ingredientOnClick = (item) => {
-
-    dispatch(setPopupData(item));
-
-  }
-
-  const destroyPopup = () => {
-    dispatch(resetPopupData());
-  }
-
   return (
     <>
       <li className={`${styles["type-item"]} mt-10`} id={data.type}>
@@ -50,7 +35,6 @@ const TypeItem = ({ data, burgerComposition }) => {
               key = {item._id}
               data ={ item }
               usageCount={getUsageCount(item)}
-              //onClick={()=>ingredientOnClick(item)}
             />
 
           ))}
@@ -134,17 +118,12 @@ const List = ({ dataTree, burgerComposition, firstTab, changeTab }) => {
 
 const BurgerIngredients = () => {
 
-  const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("bun");
 
   const { dataTree, burgerComposition } = useSelector(state=>({
     dataTree: transformArrayToTree(state.ingredients.ingredients),
     burgerComposition: state.burgerConstructor.ingredients
   }));
-
-  useEffect(()=>{
-    dispatch(getIngredientsFromApi());
-  }, []);
 
   return (
     <section className={`${styles.section} pt-10`}>

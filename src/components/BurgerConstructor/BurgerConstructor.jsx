@@ -37,7 +37,7 @@ const BurgerConstructor = () => {
        requestData.push(bun._id);
      }
      dispatch(sendOrder(requestData));
-  }, [])
+  }, [ingredients])
 
   return (
     <section className={styles.constructor}>

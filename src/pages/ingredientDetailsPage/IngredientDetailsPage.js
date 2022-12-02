@@ -1,11 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { IngredientDetails } from '../../components/Popups/IngredientDetails';
-import { setPopupData, resetPopupData } from '../../services/actions/ingredientPupup';
-import { getIngredientsFromApi } from '../../services/actions/ingredients';
+import { setPopupData } from '../../services/actions/ingredientPupup';
+import styles from './details.module.css';
+import PropTypes from "prop-types";
 
-const IngredientDetailsPage = () => {
+const IngredientDetailsPage = ({ mode="modal" }) => {
 
   const { id } = useParams();
 
@@ -19,18 +20,23 @@ const IngredientDetailsPage = () => {
 
   useEffect(()=>{
 
-    if (ingredients.length == 0) {
-      dispatch(getIngredientsFromApi());
-    }
     const ingredient = ingredients.find(item => item._id === id)
 
     dispatch(setPopupData(ingredient));
   }, [ingredients, id]);
 
   return (
-    popupIngredient ? (<IngredientDetails />) : null
+    popupIngredient ? (
+      <div className={styles.details}>
+        <IngredientDetails mode={mode} />
+      </div>
+    ) : null
 
   )
+}
+
+IngredientDetailsPage.propTypes = {
+  mode: PropTypes.string
 }
 
 export  { IngredientDetailsPage }

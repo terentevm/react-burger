@@ -1,12 +1,9 @@
-import React, { useCallback } from 'react';
-import { BrowserRouter as Router, Switch, Route, useLocation, useHistory } from 'react-router-dom';
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch} from "react-redux";
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
+
 import AppHeader from '../AppHeader';
-import { BurgerIngredients } from '../BurgerIngredients';
-import { BurgerConstructor } from '../BurgerConstructor';
-import { transformArrayToTree } from "../../utils/transformData";
-import { getIngredients } from "../../api";
+import { getIngredientsFromApi} from "../../services/actions/ingredients";
 import {
   MainPage,
   RegisterPage,
@@ -22,13 +19,19 @@ import { ProtectedPage, NonAuthPage } from '../../router';
 
 import style from './app.module.css';
 const App = () => {
-  let location = useLocation();
-  let history = useHistory();
-  let background = location.state && location.state.background;
+  const location = useLocation();
+  const history = useHistory();
+
+  const dispatch = useDispatch();
+  const background = location.state && location.state.background;
+
+  useEffect(()=>{
+    dispatch(getIngredientsFromApi());
+  }, [])
 
   const goBack = useCallback(() => {
     history.goBack();
-  });
+  }, []);
 
   return (
     <>
@@ -53,7 +56,7 @@ const App = () => {
             <ProtectedPage path="/profile">
               <ProfilePage />
             </ProtectedPage>
-            <Route path="/ingredients/:id" children={<IngredientDetailsPage />} />`
+            <Route path="/ingredients/:id" children={<IngredientDetailsPage mode="page"/>} />`
             <Route path="*">
               <NotFoundPage />
             </Route>
@@ -63,7 +66,7 @@ const App = () => {
               path='/ingredients/:id'
               children={
                 <Modal visible={true} onClose={goBack}>
-                  <IngredientDetailsPage />
+                  <IngredientDetailsPage mode="modal" />
                 </Modal>
               }
             />

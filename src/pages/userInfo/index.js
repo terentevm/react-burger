@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUser } from '../../services/actions/auth';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { updateUserRequest} from "../../api";
+import { updateUserData } from "../../services/actions/auth";
+import { useForm } from "../../hooks/useForm";
 import styles from './user.module.css';
 
 const UserInfo = () => {
   const dispatch = useDispatch();
   const user = useSelector(state=>state.auth.user);
+  const userRequest = useSelector(state=>state.auth.userRequest);
 
-  const [ userRequest, setUserRequest ] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { values, setValues, handleChange} = useForm({
+    name: "",
+    email: "",
+    password: ""
+  });
+
+  const { name, email, password } = values;
 
   const [nameDisabled, setNameDisabled] = useState(true);
   const [emailDisabled, setEmailDisabled] = useState(true);
@@ -21,9 +25,7 @@ const UserInfo = () => {
   const [dataIsModified, setDataIsModified] = useState(false);
 
   useEffect(()=>{
-    const { name, email } = user;
-    setName(name);
-    setEmail(email);
+    setValues({...user, password: ""});
   }, [user]);
 
   useEffect(()=>{
@@ -35,17 +37,6 @@ const UserInfo = () => {
 
   }, [name, email, password]);
 
-  const nameOnChange = (e) => {
-    setName(e.target.value);
-  }
-
-  const emailOnChange = (e) => {
-    setEmail(e.target.value);
-  }
-
-  const passwordOnChange = (e) => {
-    setPassword(e.target.value);
-  }
 
   const onSubmitFormHandler = (event) => {
 
@@ -65,15 +56,7 @@ const UserInfo = () => {
       newUserData.email = email;
     }
 
-    setUserRequest(true);
-
-    updateUserRequest(newUserData).then(res=>{
-      setDataIsModified(false);
-    }).catch(err=>{
-      alert(err.message ? err.message : "Ошибка сохранение данных");
-    }).finally(()=>{
-      setUserRequest(false);
-    })
+    dispatch(updateUserData(newUserData));
   }
 
   return  (
@@ -85,7 +68,7 @@ const UserInfo = () => {
         disabled={nameDisabled}
         icon="EditIcon"
         onIconClick={()=>setNameDisabled(false)}
-        onChange={nameOnChange}
+        onChange={handleChange}
       />
       <Input
         name="email"
@@ -94,7 +77,7 @@ const UserInfo = () => {
         disabled={emailDisabled}
         icon="EditIcon"
         onIconClick={()=>setEmailDisabled(false)}
-        onChange={emailOnChange}
+        onChange={handleChange}
       />
       <PasswordInput
         name={'password'}
@@ -103,7 +86,7 @@ const UserInfo = () => {
         disabled={passwordDisabled}
         icon="EditIcon"
         onIconClick={()=>setPasswordDisabled(false)}
-        onChange={passwordOnChange}
+        onChange={handleChange}
       />
       <Button
         htmlType="submit"

@@ -5,7 +5,7 @@ import { useDrag } from 'react-dnd';
 import styles from './ingredients.module.css';
 
 const IngredientCard = ({ data, usageCount }) => {
-  let location = useLocation();
+  const location = useLocation();
 
   const [{ opacity }, ref] = useDrag({
     type: data.type === 'bun' ? 'bun' : 'ingredient',

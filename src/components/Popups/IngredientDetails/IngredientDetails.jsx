@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
 import styles from './ingredient-popup.module.css';
+import PropTypes from 'prop-types';
 
-const IngredientDetails = () => {
+const IngredientDetails = ({ mode="modal" }) => {
 
   const {
     name,
@@ -12,9 +13,14 @@ const IngredientDetails = () => {
     image_large
   } = useSelector(state => state.ingredientPopup.ingredient);
 
+  const headerModClass = mode==="page" ? styles.popup__header_center : "";
   return (
     <div className={styles.popup}>
-      <header className={`${styles.popup__header} text text_type_main-large`}>Детали ингредиента</header>
+      <header
+        className={`${styles.popup__header} ` + headerModClass +` text text_type_main-large`}
+      >
+        Детали ингредиента
+      </header>
       <div className={styles.popup__image}>
         <img src={ image_large } alt="Изображение ингредиента"/>
       </div>
@@ -43,4 +49,7 @@ const IngredientDetails = () => {
   );
 }
 
+IngredientDetails.propTypes = {
+  mode: PropTypes.string
+}
 export { IngredientDetails };

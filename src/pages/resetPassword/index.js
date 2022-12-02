@@ -2,9 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { setIsUserRequest } from '../../services/actions/auth';
+import { resetPassword } from '../../services/actions/auth';
 import { resetPasswordRequest } from '../../api';
 import styles from './reset.module.css';
+import { useForm } from "../../hooks/useForm";
 
 const ResetPassword = () => {
   const location = useLocation();
@@ -16,8 +17,9 @@ const ResetPassword = () => {
     history.push('/login');
   }
 
-  const [password, setPassword] = useState("");
-  const [code, setCode] = useState("");
+  const { values, handleChange } = useForm({code: "", password: ""});
+  const { code, password } = values;
+
   const dispatch = useDispatch();
   const { isAuth, userRequest } = useSelector(state=>({
     isAuth: state.auth.isAuth,
@@ -26,15 +28,11 @@ const ResetPassword = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    dispatch(setIsUserRequest(true));
-    resetPasswordRequest({password: password, token: code}).then(res=>{
+
+    dispatch(resetPassword({password: password, token: code}, ()=>{
       history.push('/login');
-    }).catch(err=>{
-      console.log(err);
-      alert(err?.message || "Произошла ошибка. Попробуйте еще раз!")
-    }).finally(()=>{
-      dispatch(setIsUserRequest(false));
-    })
+    }))
+
   }
 
   return (
@@ -47,13 +45,13 @@ const ResetPassword = () => {
           extraClass="mb-2"
           value={password}
           disabled={userRequest}
-          onChange={e=>setPassword(e.target.value)}
+          onChange={handleChange}
         />
         <Input
           name="code"
           placeholder="Введите код из письма"
           value={code}
-          onChange={e=>setCode(e.target.value)}
+          onChange={handleChange}
           disabled={userRequest}
         />
         <Button
