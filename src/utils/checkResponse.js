@@ -4,6 +4,7 @@ export const checkResponse = async (res) => {
     return data;
   }
 
-  throw new Error('Произошла ошибка');
+  const body = await res.json();
+  return Promise.reject(body)
 
 }

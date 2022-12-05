@@ -1,0 +1,22 @@
+.register {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 80px
+}
+
+.register__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.register__bottom {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}

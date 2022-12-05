@@ -12,6 +12,10 @@
     padding: 14px 0;
 }
 
+.popup__header_center {
+    text-align: center;
+}
+
 .popup__title {
     margin-top: 16px;
 }

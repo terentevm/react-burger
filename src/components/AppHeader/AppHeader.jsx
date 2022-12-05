@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import {Link, NavLink, useRouteMatch} from 'react-router-dom';
 import Container from "../Container";
 import { Nav, NavItem } from "../Nav";
 import { BurgerIcon, ListIcon, ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -7,28 +9,28 @@ import {useState} from "react";
 
 const AppHeader = () => {
 
-  const [menuItems, setMenuItems] = useState([
-    {
-      text: "Конструктор",
-      icon: BurgerIcon,
-      isActive: true
-    },
-    {
-      text: "Лента заказов",
-      icon: ListIcon,
-      isActive: false
-    },
-  ]);
+  const isConstructor = !!useRouteMatch({ path: '/', exact: true});
+  const isFeed = !!useRouteMatch('/feed');
+  const isProfile = !!useRouteMatch('/profile');
 
-  const changeMenuItemActivity = (activeItem) => {
+  const [menuItems, setMenuItems] = useState([]);
 
-    const newState = menuItems.map(item => {
-      item.isActive = item.text === activeItem.text;
-      return item;
-    });
-
-    setMenuItems(newState);
-  }
+  useEffect(()=>{
+    setMenuItems([
+      {
+        text: "Конструктор",
+        icon: BurgerIcon,
+        isActive: isConstructor,
+        path: "/"
+      },
+      {
+        text: "Лента заказов",
+        icon: ListIcon,
+        isActive: isFeed,
+        path: "/feed"
+      },
+    ])
+  }, [isConstructor, isFeed])
 
   return (
     <header className={styles.header}>
@@ -37,23 +39,36 @@ const AppHeader = () => {
           <menu className={styles.menu}>
             { menuItems.map(
               (item, key) =>
-                <NavItem
-                  key={key}
-                  text={item.text}
-                  isActive={item.isActive}
-                  Icon={item.icon}
-                  onClick={()=>changeMenuItemActivity(item)}
-                />)
+                (
+                  <NavLink
+                    key={key}
+                    to={item.path}
+                    className={styles.header__link}
+                  >
+                    <NavItem
+                      text={item.text}
+                      isActive={item.isActive}
+                      Icon={item.icon}
+                    />
+                  </NavLink>)
+            )
             }
           </menu>
           <div className={styles.logo}>
-            <Logo />
+            <Link to="/">
+              <Logo />
+            </Link>
           </div>
-          <NavItem
-            text="Личный кабинет"
-            Icon={ ProfileIcon }
-            isActive={false}
-          />
+          <NavLink
+            to="/profile"
+            className={styles.header__link}
+          >
+            <NavItem
+              text="Личный кабинет"
+              Icon={ ProfileIcon }
+              isActive={isProfile}
+            />
+          </NavLink>
         </Nav>
       </Container>
     </header>

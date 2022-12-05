@@ -1,6 +1,6 @@
-import {useState, useEffect, useMemo} from "react";
+import { useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { ConstructorItem } from './ConstructorItem';
+import { useHistory } from 'react-router-dom';
 import { IngredientsList } from './IngredientsList';
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Modal } from "../Modal";
@@ -10,11 +10,14 @@ import styles from './constructor.module.css';
 
 const BurgerConstructor = () => {
 
+  const history = useHistory();
   const dispatch = useDispatch();
-  const { bun, ingredients, showPopup } = useSelector(state=>({
+
+  const { bun, ingredients, showPopup, isAuth } = useSelector(state=>({
     bun: state.burgerConstructor.bun,
     ingredients: state.burgerConstructor.ingredients,
-    showPopup: state.orderDetails.showPopup
+    showPopup: state.orderDetails.showPopup,
+    isAuth: state.auth.isAuth
   }));
 
   const price = useMemo(()=>{
@@ -24,13 +27,17 @@ const BurgerConstructor = () => {
     }, 0);
   }, [bun, ingredients])
 
-  const sendOrderToApi = () => {
-     const requestData = ingredients.map(item =>item.ingredient._id);
+  const sendOrderToApi = useCallback(() => {
+    if (!isAuth) {
+      history.push('/login');
+      return;
+    }
+    const requestData = ingredients.map(item =>item.ingredient._id);
      if (bun) {
        requestData.push(bun._id);
      }
      dispatch(sendOrder(requestData));
-  }
+  }, [ingredients])
 
   return (
     <section className={styles.constructor}>
