@@ -1,4 +1,4 @@
-.constructor {
+.constructors {
     display: flex;
     flex-direction: column;
     flex-basis: 50%;
@@ -89,6 +89,7 @@ border-radius: 40px 40px 88px 88px;
   background: var(--color-secondary);
   border-radius: 10px;
 }
+
 .constructor__item {
     display: flex;
     flex-direction: row;
