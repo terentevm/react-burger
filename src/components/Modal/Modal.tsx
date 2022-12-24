@@ -7,9 +7,6 @@ import { TModalProps } from './types';
 
 const modalRoot = document.getElementById( 'modal' ) as HTMLElement;
 
-interface IKeyboardEvent extends Event {
-  key: string
-}
 const Modal = ({ visible, onClose, children }: TModalProps) => {
 
   const btnCloseOnClickHandler = useCallback((e: SyntheticEvent) => {
@@ -25,7 +22,7 @@ const Modal = ({ visible, onClose, children }: TModalProps) => {
 
 
   useEffect(()=>{
-    const onKeyDownHandler : (e: IKeyboardEvent) => any = (e: IKeyboardEvent) => {
+    const onKeyDownHandler : (e: KeyboardEvent) => any = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
       }

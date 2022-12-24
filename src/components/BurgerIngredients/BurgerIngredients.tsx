@@ -1,16 +1,15 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useEffect, useRef } from "react";
-import { useSelector, useDispatch } from 'react-redux';
 import { IngredientCard } from "./IngredientCard";
 import { transformArrayToTree } from "../../utils/transformData";
-import { RootState } from '../../services/reducers';
 import { TIngredient, TItemWithId } from '../../types';
 import { TListProps, TTypeProps } from './types';
 import styles from './ingredients.module.css';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 const TypeItem = ({ data, burgerComposition } : TTypeProps) => {
 
-  const currentBun = useSelector((state: RootState)=>state.burgerConstructor.bun);
+  const currentBun = useAppSelector((state)=>state.burgerConstructor.bun);
 
   const getUsageCount = (ingredient: TIngredient) => {
 
@@ -120,7 +119,7 @@ const BurgerIngredients = () => {
 
   const [currentTab, setCurrentTab] = useState("bun");
 
-  const { dataTree, burgerComposition } = useSelector((state: RootState)=>({
+  const { dataTree, burgerComposition } = useAppSelector((state)=>({
     dataTree: transformArrayToTree(state.ingredients.ingredients),
     burgerComposition: state.burgerConstructor.ingredients
   }));

@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { useDispatch} from "react-redux";
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
-import { ThunkDispatch } from 'redux-thunk';
 import AppHeader from '../AppHeader';
 import { getIngredientsFromApi} from "../../services/actions/ingredients";
 import {
@@ -19,11 +17,12 @@ import { Modal } from '../Modal';
 import { ProtectedPage, NonAuthPage } from '../../router';
 
 import style from './app.module.css';
+import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 const App = () => {
   const location = useLocation();
   const history = useHistory();
   const state = location.state as TModalState;
-  const dispatch = useDispatch<ThunkDispatch<{}, {}, any>>();;
+  const dispatch = useThunkDispatch();
   const background = state && state.background;
 
   useEffect(()=>{

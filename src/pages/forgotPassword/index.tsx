@@ -1,13 +1,12 @@
-import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { forgotPassword } from '../../services/actions/auth';
 import { useForm } from "../../hooks/useForm";
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
-import { RootState } from '../../services/reducers';
-import { SyntheticEvent } from 'react';
+import { FormEvent } from 'react';
 import { TForgotData } from '../../types';
 import styles from './forgot.module.css';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 const ForgotPassword = () => {
   const location = useLocation();
@@ -18,11 +17,11 @@ const ForgotPassword = () => {
 
   const dispatch = useThunkDispatch();
 
-  const { userRequest } = useSelector((state: RootState)=>({
+  const { userRequest } = useAppSelector((state)=>({
     userRequest: state.auth.userRequest
   }));
 
-  const onSubmitHandler = (e: SyntheticEvent) => {
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(forgotPassword({email: email}, ()=>{
       history.push('/reset-password',{from:location});

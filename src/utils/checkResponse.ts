@@ -1,6 +1,4 @@
-import { IResponse } from "../types";
-
-export const checkResponse = async <T>(res: IResponse<T>) : Promise<T> => {
+export const checkResponse = async <T>(res: Response) : Promise<T> => {
   if (res.ok) {
     const data = await res.json();
     return data;

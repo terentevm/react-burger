@@ -1,24 +1,21 @@
-import styles from './constructor.module.css';
 import { Bun } from './Bun';
 import { ConstructorItem } from './ConstructorItem';
-import {useContext} from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { DropArea } from '../DragAndDrop';
 import {
   addBun,
   addIngredient,
-  removeIngredient,
-  moveIngredient
+  removeIngredient
 } from '../../services/actions/constructor';
-import { RootState } from '../../services/reducers';
 import { TIngredient, TItemWithId } from '../../types';
-
+import { useAppSelector } from '../../hooks/useAppSelector';
+import styles from './constructor.module.css';
 
 const IngredientsList = () => {
 
   const dispatch = useDispatch();
 
-  const { bun, ingredients } = useSelector((state: RootState)=>({
+  const { bun, ingredients } = useAppSelector((state)=>({
     bun: state.burgerConstructor.bun,
     ingredients: state.burgerConstructor.ingredients,
   }));

@@ -1,7 +1,6 @@
-import { useSelector } from 'react-redux';
 import styles from './ingredient-popup.module.css';
-import { RootState } from '../../../services/reducers';
 import { TIngredientSelector, TProps } from './types';
+import { useAppSelector } from '../../../hooks/useAppSelector';
 
 const IngredientDetails = ({ mode="modal" } : TProps) => {
 
@@ -12,7 +11,7 @@ const IngredientDetails = ({ mode="modal" } : TProps) => {
     carbohydrates,
     calories,
     image_large
-  } = useSelector((state: RootState) : TIngredientSelector => ({
+  } = useAppSelector((state) : TIngredientSelector => ({
     name: state.ingredientPopup.ingredient?.name || "",
     proteins: state.ingredientPopup.ingredient?.proteins || 0,
     fat: state.ingredientPopup.ingredient?.fat || 0,

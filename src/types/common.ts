@@ -4,15 +4,6 @@ export interface IObjectWithAnyKeys {
   [key: string]: any;
 }
 
-export interface IResponse<T> {
-  readonly headers: IObjectWithAnyKeys;
-  readonly ok: boolean;
-  readonly body: any;
-  readonly status: number;
-  json: () => Promise<T>
-}
-
-
 export type LocationState = {
   from?: Location | undefined;
   state?: {

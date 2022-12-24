@@ -1,15 +1,13 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Route, Redirect  } from 'react-router-dom';
+import { ReactNode, useEffect } from 'react';
+import { Route, Redirect, RouteProps  } from 'react-router-dom';
 import { getUser } from '../services/actions/auth';
-import { ThunkDispatch } from 'redux-thunk';
-import { RootState } from "../services/reducers";
-import { Props } from './types';
+import { useThunkDispatch } from '../hooks/useThunkDispatch';
+import { useAppSelector } from '../hooks/useAppSelector';
 
-const ProtectedPage = ({children, ...rest}: Props) => {
+const ProtectedPage = ({children, ...rest}: RouteProps & {children?: ReactNode}) => {
 
-  const dispatch = useDispatch<ThunkDispatch<{}, {}, any>>();
-  const { isAuth,isUserLoaded } = useSelector((state: RootState)=>({
+  const dispatch = useThunkDispatch();
+  const { isAuth,isUserLoaded } = useAppSelector((state)=>({
     isAuth: state.auth.isAuth,
     isUserLoaded: state.auth.isUserLoaded
   }));

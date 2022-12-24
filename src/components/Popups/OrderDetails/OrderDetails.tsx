@@ -1,11 +1,10 @@
 import styles from './popup.module.css';
 import DoneSVG from '../../../images/done.svg';
-import { useSelector } from 'react-redux';
-import { RootState } from "../../../services/reducers";
+import { useAppSelector } from '../../../hooks/useAppSelector';
 
 const OrderDetails = () => {
 
-  const orderNumber = useSelector((state: RootState)=>state.orderDetails.orderNumber);
+  const orderNumber = useAppSelector((state)=>state.orderDetails.orderNumber);
 
   return (
     <div className={styles.popup}>

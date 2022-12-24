@@ -1,17 +1,16 @@
-import { useCallback, SyntheticEvent } from 'react';
+import { useCallback, FormEvent } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { login } from '../../services/actions/auth';
 import { useForm } from "../../hooks/useForm";
 import styles from './login.module.css';
-import { RootState } from '../../services/reducers';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import { TLoginData } from '../../types';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 const LoginPage = () => {
   const dispatch = useThunkDispatch();
-  const { userRequest } = useSelector((state: RootState)=>({
+  const { userRequest } = useAppSelector((state)=>({
     userRequest: state.auth.userRequest
   }));
 
@@ -21,7 +20,7 @@ const LoginPage = () => {
 
   const { email, password } : TLoginData = values;
 
-  const onSubmitHandler = useCallback((event: SyntheticEvent)=>{
+  const onSubmitHandler = useCallback((event: FormEvent<HTMLFormElement>)=>{
     event.preventDefault();
 
     dispatch(login({

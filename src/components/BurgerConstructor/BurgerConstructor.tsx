@@ -1,22 +1,21 @@
 import { useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { IngredientsList } from './IngredientsList';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Modal } from '../Modal';
 import { OrderDetails } from '../Popups/OrderDetails';
 import { resetOrderDetails, sendOrder } from '../../services/actions/orderDetails';
-import { RootState } from '../../services/reducers';
 import styles from './constructor.module.css';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import { TItemWithId } from '../../types';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 const BurgerConstructor = () => {
 
   const history = useHistory();
   const dispatch = useThunkDispatch();
 
-  const {bun, ingredients, showPopup, isAuth} = useSelector((state: RootState) => ({
+  const {bun, ingredients, showPopup, isAuth} = useAppSelector((state) => ({
     bun: state.burgerConstructor.bun,
     ingredients: state.burgerConstructor.ingredients,
     showPopup: state.orderDetails.showPopup,

@@ -1,16 +1,20 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import { useSelector } from 'react-redux';
+import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { updateUserData } from "../../services/actions/auth";
 import { useForm } from "../../hooks/useForm";
 import styles from './user.module.css';
+import { useThunkDispatch } from '../../hooks/useThunkDispatch';
+import { RootState } from '../../services/reducers';
+import { TUserData } from '../../types';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 const UserInfo = () => {
-  const dispatch = useDispatch();
-  const user = useSelector(state=>state.auth.user);
-  const userRequest = useSelector(state=>state.auth.userRequest);
+  const dispatch = useThunkDispatch();
+  const user = useAppSelector((state)=>state.auth.user) as TUserData;
+  const userRequest = useAppSelector((state)=>state.auth.userRequest);
 
-  const { values, setValues, handleChange} = useForm({
+  const { values, setValues, handleChange} = useForm<TUserData>({
     name: "",
     email: "",
     password: ""
@@ -38,11 +42,15 @@ const UserInfo = () => {
   }, [name, email, password]);
 
 
-  const onSubmitFormHandler = (event) => {
+  const onSubmitFormHandler = (event: FormEvent<HTMLFormElement>) => {
 
     event.preventDefault();
 
-    const newUserData = {};
+    const newUserData: TUserData = {
+      name: "",
+      email: "",
+      password: ""
+    };
 
     if (name !== user.name && name !== "") {
       newUserData.name = name;
@@ -79,13 +87,13 @@ const UserInfo = () => {
         onIconClick={()=>setEmailDisabled(false)}
         onChange={handleChange}
       />
-      <PasswordInput
+      <Input
         name={'password'}
         placeholder="Пароль"
         value={password}
         disabled={passwordDisabled}
         icon="EditIcon"
-        onIconClick={()=>setPasswordDisabled(false)}
+        onIconClick={(e: React.MouseEvent<HTMLDivElement>)=>setPasswordDisabled(false)}
         onChange={handleChange}
       />
       <Button

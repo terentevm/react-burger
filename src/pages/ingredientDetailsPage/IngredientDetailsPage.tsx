@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { IngredientDetails } from '../../components/Popups/IngredientDetails';
 import { setPopupData } from '../../services/actions/ingredientPupup';
 import { IIdParams } from '../../types';
-import { RootState } from '../../services/reducers';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import styles from './details.module.css';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 type Props = {
   mode: string
@@ -16,7 +15,7 @@ const IngredientDetailsPage = ({ mode="modal" } : Props) => {
 
   const { id } = useParams<IIdParams>();
 
-  const { ingredients, popupIngredient } = useSelector((state: RootState)=>({
+  const { ingredients, popupIngredient } = useAppSelector((state)=>({
     ingredients: state.ingredients.ingredients,
     popupIngredient: state.ingredientPopup.ingredient,
   }));

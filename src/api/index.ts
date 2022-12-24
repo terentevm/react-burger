@@ -1,10 +1,8 @@
 import { checkResponse } from '../utils/checkResponse';
-import { THeader, TFetchOptions } from "./types";
 import {
   IObjectWithAnyKeys,
   TUserData,
   TLoginData,
-  TForgotData,
   TResetData,
   TResUserData,
   TResAuthData,
@@ -22,6 +20,10 @@ const headers : IObjectWithAnyKeys = {
   'Accept': 'application/json',
 }
 
+const request = async <T>(url: string, options: IObjectWithAnyKeys) : Promise<T> => {
+    return fetch(url, options).then(checkResponse<T>);
+}
+
 const getHeadersWithToken = () : IObjectWithAnyKeys => {
   return {
     ...headers,
@@ -30,22 +32,21 @@ const getHeadersWithToken = () : IObjectWithAnyKeys => {
 }
 
 export const refreshToken = () => {
-  return fetch(`${API_ROOT}/auth/token`, {
+  return request(`${API_ROOT}/auth/token`, {
     method: "POST",
     headers: headers,
     body: JSON.stringify({
       token: localStorage.getItem(REFRESH_TOKEN_KEY),
     }),
-  }).then(checkResponse);
+  });
 };
 
 export const fetchWithRefresh = async <T>(url: string, options: IObjectWithAnyKeys) : Promise<T> => {
   try {
-    const res = await fetch(url, options);
-    return await checkResponse<T>(res);
+    return await request<T>(url, options);
   } catch (err : any) {
     if (err.message === "jwt expired") {
-      const refreshData = await refreshToken(); //обновляем токен
+      const refreshData : TResAuthData = await refreshToken() as TResAuthData; //обновляем токен
       if (!refreshData.success) {
         Promise.reject(refreshData);
       }

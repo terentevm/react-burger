@@ -1,5 +1,4 @@
 import { Link, useLocation } from 'react-router-dom';
-import { IngredientCardType } from "../../utils/types";
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from 'react-dnd';
 import styles from './ingredients.module.css';
@@ -45,7 +44,5 @@ const IngredientCard = ({ data, usageCount }: TIngredientCardProps) => {
   );
 
 };
-
-IngredientCard.propTypes = IngredientCardType;
 
 export { IngredientCard };

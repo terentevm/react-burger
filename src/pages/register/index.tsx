@@ -1,25 +1,24 @@
-import { SyntheticEvent, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { FormEvent, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { register } from '../../services/actions/auth';
 import { useForm } from '../../hooks/useForm';
 import styles from './register.module.css';
-import { RootState } from '../../services/reducers';
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
 import { TUserData } from '../../types';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 const RegisterPage = () => {
   const dispatch = useThunkDispatch();
 
-  const { userRequest } = useSelector((state: RootState) => ({
+  const { userRequest } = useAppSelector((state) => ({
     userRequest: state.auth.userRequest
   }));
   const { values, handleChange } = useForm<TUserData>({ name: '', email: '', password: '' });
 
   const { name, email, password } = values;
 
-  const onSubmitHandler = useCallback((event: SyntheticEvent) => {
+  const onSubmitHandler = useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     dispatch(register({

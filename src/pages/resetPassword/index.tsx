@@ -1,13 +1,12 @@
-import {FC, SyntheticEvent, ReactElement } from 'react';
-import { useSelector } from 'react-redux';
+import { FC, ReactElement, FormEvent } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { resetPassword } from '../../services/actions/auth';
 import styles from './reset.module.css';
 import { useForm } from "../../hooks/useForm";
-import { RootState } from "../../services/reducers";
 import { LocationState} from "../../types";
 import { useThunkDispatch } from '../../hooks/useThunkDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 const ResetPassword : FC = () : ReactElement  => {
   const location = useLocation<LocationState>();
@@ -23,11 +22,11 @@ const ResetPassword : FC = () : ReactElement  => {
   const { code, password } = values;
 
   const dispatch = useThunkDispatch();
-  const { userRequest } = useSelector((state: RootState)=>({
+  const { userRequest } = useAppSelector((state)=>({
     userRequest: state.auth.userRequest
   }));
 
-  const onSubmitHandler = (e: SyntheticEvent) => {
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     dispatch(resetPassword({password: password, token: code}, ()=>{
